@@ -1,0 +1,98 @@
+---
+- name: To Provision Git Servers
+  hosts: git_servers
+  vars_prompt:
+    - name: account_pass
+      prompt: "Please enter account password"
+    - name: git_pass
+      prompt: "Please enter git pass "
+
+  become: True
+  tasks:
+    - name: To Create new group
+      group:
+       name: git
+       state: present 
+      tags:
+       - prestep
+    - name: To make a user git
+      user:
+       name: git
+       group: git
+       password: "{{ account_pass | password_hash('sha512') }}"
+       shell: /bin/bash
+      tags:
+       - prestep
+    - name: Create Home Directory for GIT
+      file:
+       path: /home/git
+       recurse: yes
+       state: directory
+       mode: '0755'
+       owner: git
+       group: git 
+      tags:
+       - prestep
+    - name: To Verify if git user exists
+      shell: id -u git
+      register: user_exists
+      ignore_errors: true
+      tags:
+       - presteps
+    - debug:
+        msg: "This is to test if git user exist : {{ user_exists }} "
+    - name: To Copy All Files to GIT server
+      copy:
+        src: /home/lenovo/knowledge_blog/knowledgegate/
+        dest: /home/git/django_app/
+        mode: '0755'
+        owner: git
+        group: git 
+      tags:
+       - package
+    - name: To Install Git
+      apt:
+        name: git
+        state: present
+      tags:
+       - install
+    - name: To get git version
+      shell: git --version
+      register: git_version
+      ignore_errors: true
+      tags:
+       - install
+    - name: To display git version
+      debug:
+        msg: "Version is {{ git_version }}"
+      tags:
+       - install
+    - name: To set git configurations
+      git_config:
+        name: user.name
+        scope: global
+        value: mohiniu 
+      tags:
+       - git_config
+    - name: To list all GIT configurations
+      template:
+        src: /home/lenovo/knowledge_blog/knowledgegate/scripts/git_init.sh 
+        dest: /home/git
+        mode: '0755'
+        owner: git
+        group: git
+      tags:
+       - git_init
+    - name: To initialise GIT using shell script
+      shell: /home/git/git_init.sh
+      args:
+        chdir: /home/git
+        executable: /bin/bash
+      tags:
+       - git_init
+    - name: To Initialist GIT repository
+      shell: 
+        cmd: git init && git config --global user.name mohiniu && git config --global user.email mohini4git@gmail.com 
+        chdir: /home/git
+      tags:
+       - init_git

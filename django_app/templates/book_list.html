@@ -1,0 +1,46 @@
+{% extends 'home.html' %}
+
+{% block upload %}
+<h3>Book List</h3>
+<img src="https://source.unsplash.com/500x500/?book" class="img-circle" alt="Cinque Terre" width="304" height="236">
+
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Application</th>
+        <th>Title</th>
+        <th>Download</th>
+        <th>Doc Type</th>
+        <th>Author</th>
+    </tr>
+    </thead>
+    <tbody>
+    {%  for  book  in  books  %}
+    <tr>
+        <td>{{ book.app }}</td>
+        <td>{{ book.btitle }}</td>
+        <td>
+            <a href="{{ book.pdf.url }}" class="btn btn-primary btn-sm">
+                Download Book
+            </a>
+
+        </td>
+        <td>{{ book.author }} </td>
+        <td> {{ book.doc_type }} </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<p>
+
+        <h4>
+       <a href="{% url 'upload_book' %}">
+    Click here to upload <Book></Book>
+    </a>
+        </h4>
+
+
+</p>
+{% endblock upload %}

@@ -1,0 +1,11 @@
+- name: To make a group git
+    - name: To make home directory for git
+    - name: To give proper permissions to git code directory
+    - name: To verify if particular user exists on server
+    - name: To verify if particular user exists
+    - name: To copy code to git server
+    - name: To install git
+    - name: To verify if git is installed by verifing the git version
+    - name: To server git configurations , like user ,email,repo
+    - name: To commit code to git
+

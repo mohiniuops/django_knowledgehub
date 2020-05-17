@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>KnowledgeHub</title>
+
+
+</head>
+<body>
+<p>Hello. List of applications are :  {{ app }}</p>
+{% block upload %}
+{% endblock upload %}
+</body>
+</html>
